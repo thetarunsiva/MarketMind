@@ -1,0 +1,379 @@
+{
+  "competitors": [
+    {"seed_id": "c1", "name": "Notion", "website": "https://notion.so", "category": "b2b_productivity"},
+    {"seed_id": "c2", "name": "ClickUp", "website": "https://clickup.com", "category": "b2b_productivity"},
+    {"seed_id": "c3", "name": "Monday.com", "website": "https://monday.com", "category": "b2b_productivity"},
+    {"seed_id": "c4", "name": "Airtable", "website": "https://airtable.com", "category": "b2b_productivity"},
+    {"seed_id": "c5", "name": "Asana", "website": "https://asana.com", "category": "b2b_productivity"}
+  ],
+  "sources": [
+    {"seed_id": "s1", "competitor_seed_id": "c1", "url": "https://notion.so", "source_type": "landing_page"},
+    {"seed_id": "s2", "competitor_seed_id": "c1", "url": "https://notion.so/pricing", "source_type": "pricing_page"},
+    {"seed_id": "s3", "competitor_seed_id": "c2", "url": "https://clickup.com", "source_type": "landing_page"},
+    {"seed_id": "s4", "competitor_seed_id": "c2", "url": "https://clickup.com/pricing", "source_type": "pricing_page"},
+    {"seed_id": "s5", "competitor_seed_id": "c3", "url": "https://monday.com", "source_type": "landing_page"},
+    {"seed_id": "s6", "competitor_seed_id": "c3", "url": "https://monday.com/pricing", "source_type": "pricing_page"},
+    {"seed_id": "s7", "competitor_seed_id": "c4", "url": "https://airtable.com", "source_type": "landing_page"},
+    {"seed_id": "s8", "competitor_seed_id": "c4", "url": "https://airtable.com/pricing", "source_type": "pricing_page"},
+    {"seed_id": "s9", "competitor_seed_id": "c5", "url": "https://asana.com", "source_type": "landing_page"},
+    {"seed_id": "s10", "competitor_seed_id": "c5", "url": "https://asana.com/pricing", "source_type": "pricing_page"}
+  ],
+  "snapshots": [
+    {
+      "seed_id": "snap1", "source_seed_id": "s1", "competitor_seed_id": "c1",
+      "captured_at": "2025-12-01T08:00:00Z",
+      "raw_content": "One workspace for your notes, docs, and projects. Organize everything with flexible, connected blocks.",
+      "extracted_claims": {
+        "hero_headline": "One workspace for your notes, docs, and projects",
+        "subheadline": "Notion is the connected workspace where better, faster work happens.",
+        "cta_text": "Get Notion free",
+        "pricing_text": null,
+        "feature_bullets": ["Notes and docs", "Wikis and knowledge bases", "Projects and tasks", "AI-powered writing"],
+        "social_proof": ["Used by over 30 million people", "Trusted by teams at Pixar, Nike, and Amazon"],
+        "audience_terms": ["teams", "individuals", "startups", "enterprise"],
+        "major_claims": ["One workspace for all your work", "Connect your notes, tasks, and docs in one place", "Flexible blocks for any use case"]
+      }
+    },
+    {
+      "seed_id": "snap2", "source_seed_id": "s1", "competitor_seed_id": "c1",
+      "captured_at": "2026-01-15T08:00:00Z",
+      "raw_content": "Connected workspace for modern teams. AI-first collaboration that adapts to your workflow.",
+      "extracted_claims": {
+        "hero_headline": "Connected workspace for modern teams",
+        "subheadline": "Notion AI helps your team write, plan, and organize faster than ever.",
+        "cta_text": "Try Notion AI free",
+        "pricing_text": "Free plan available. Plus at $10/user/month.",
+        "feature_bullets": ["Notion AI writing assistant", "Connected docs and wikis", "Project management", "Team calendar"],
+        "social_proof": ["30M+ users worldwide", "Used by 50% of Fortune 500 companies for documentation"],
+        "audience_terms": ["modern teams", "knowledge workers", "startups", "enterprise"],
+        "major_claims": ["AI-powered workspace that learns from your team", "Break down silos between docs and tasks", "One connected system for everything your team knows"]
+      }
+    },
+    {
+      "seed_id": "snap3", "source_seed_id": "s2", "competitor_seed_id": "c1",
+      "captured_at": "2026-01-15T09:00:00Z",
+      "raw_content": "Notion pricing. Free for personal use. $10/user/month for Plus.",
+      "extracted_claims": {
+        "hero_headline": "Simple, flexible pricing",
+        "subheadline": "Start free, scale as you grow.",
+        "cta_text": "Start for free",
+        "pricing_text": "Free: personal use. Plus: $10/user/month. Business: $18/user/month. Enterprise: custom pricing.",
+        "feature_bullets": ["Unlimited pages on paid plans", "Admin controls on Business", "SAML SSO on Enterprise", "Audit log on Enterprise"],
+        "social_proof": [],
+        "audience_terms": ["individuals", "small teams", "large teams", "enterprise"],
+        "major_claims": ["Start for free, no credit card required", "Scale from personal to enterprise"]
+      }
+    },
+    {
+      "seed_id": "snap4", "source_seed_id": "s3", "competitor_seed_id": "c2",
+      "captured_at": "2025-12-01T08:00:00Z",
+      "raw_content": "One app to replace them all. Tasks, docs, goals, and chat — all in one place.",
+      "extracted_claims": {
+        "hero_headline": "One app to replace them all",
+        "subheadline": "ClickUp is the productivity platform that brings your work together.",
+        "cta_text": "Get started — it's free",
+        "pricing_text": null,
+        "feature_bullets": ["Tasks and subtasks", "Docs and wikis", "Goals and OKRs", "Chat", "Dashboards", "Automations"],
+        "social_proof": ["3M+ teams use ClickUp", "Rated #1 productivity software on G2"],
+        "audience_terms": ["teams", "everyone", "developers", "marketers", "ops"],
+        "major_claims": ["Replace all your tools with one app", "Do more with less switching", "Everything your team needs in one place"]
+      }
+    },
+    {
+      "seed_id": "snap5", "source_seed_id": "s3", "competitor_seed_id": "c2",
+      "captured_at": "2026-02-10T08:00:00Z",
+      "raw_content": "The everything app for work. ClickUp AI turns your work into results.",
+      "extracted_claims": {
+        "hero_headline": "The everything app for work",
+        "subheadline": "ClickUp Brain uses AI to summarize, automate, and connect your work context.",
+        "cta_text": "Start for free",
+        "pricing_text": "Free plan: 100MB storage. Unlimited: $7/user/month. Business: $12/user/month.",
+        "feature_bullets": ["ClickUp Brain AI", "Unlimited integrations", "Customizable views", "Sprint management", "Time tracking"],
+        "social_proof": ["Over 3 million teams", "Saves teams 3+ hours per week"],
+        "audience_terms": ["teams", "agile teams", "remote teams", "enterprise"],
+        "major_claims": ["AI that understands your work context", "Save 3+ hours per week per person", "Replace 10+ apps with ClickUp"]
+      }
+    },
+    {
+      "seed_id": "snap6", "source_seed_id": "s5", "competitor_seed_id": "c3",
+      "captured_at": "2025-12-01T08:00:00Z",
+      "raw_content": "A Work OS that lets your team run projects and workflows with confidence.",
+      "extracted_claims": {
+        "hero_headline": "A Work OS that lets your team run projects your way",
+        "subheadline": "monday.com is a cloud-based Work OS, where teams create workflow apps in minutes.",
+        "cta_text": "Get started",
+        "pricing_text": null,
+        "feature_bullets": ["Visual timeline", "Automation", "Dashboards", "Integrations", "Workdocs"],
+        "social_proof": ["Used by 225,000+ customers in 200 countries", "Enterprise-grade security"],
+        "audience_terms": ["teams", "cross-functional teams", "project managers", "enterprise"],
+        "major_claims": ["See the full picture at a glance", "Automate routine work so teams can focus on what matters", "One platform for all your work, any team"]
+      }
+    },
+    {
+      "seed_id": "snap7", "source_seed_id": "s5", "competitor_seed_id": "c3",
+      "captured_at": "2026-02-20T08:00:00Z",
+      "raw_content": "Made for the way your team actually works. Now with monday AI.",
+      "extracted_claims": {
+        "hero_headline": "Made for the way your team actually works",
+        "subheadline": "AI-powered workflows that speed up every part of your team's work.",
+        "cta_text": "Try for free",
+        "pricing_text": "Basic: $9/seat/month. Standard: $12. Pro: $19. Enterprise: custom.",
+        "feature_bullets": ["monday AI", "Advanced workflows", "Portfolio management", "Sales CRM built-in", "Dev sprints"],
+        "social_proof": ["225,000 teams trust monday.com", "Named a Leader in Gartner Magic Quadrant 2024"],
+        "audience_terms": ["teams", "ops leaders", "sales teams", "dev teams", "enterprise"],
+        "major_claims": ["AI that removes the manual work from your workflow", "One platform from project to portfolio", "Built for teams that move fast"]
+      }
+    },
+    {
+      "seed_id": "snap8", "source_seed_id": "s7", "competitor_seed_id": "c4",
+      "captured_at": "2025-12-01T08:00:00Z",
+      "raw_content": "Create apps, not just spreadsheets. Airtable is a flexible database platform for your team.",
+      "extracted_claims": {
+        "hero_headline": "Create apps, not just spreadsheets",
+        "subheadline": "Airtable is a low-code platform for building collaborative apps.",
+        "cta_text": "Start for free",
+        "pricing_text": null,
+        "feature_bullets": ["Flexible grid views", "Gallery and kanban views", "Automations", "Interfaces", "Sync across bases"],
+        "social_proof": ["Over 300,000 organizations use Airtable", "Loved by teams at Netflix, GitHub, and Medium"],
+        "audience_terms": ["builders", "ops teams", "marketing teams", "product teams", "enterprise"],
+        "major_claims": ["Build powerful apps without code", "One flexible platform to organize your most critical workflows", "Connect your data, workflow, and teams"]
+      }
+    },
+    {
+      "seed_id": "snap9", "source_seed_id": "s7", "competitor_seed_id": "c4",
+      "captured_at": "2026-02-15T08:00:00Z",
+      "raw_content": "The platform that moves at the speed of business. Now with AI-powered actions.",
+      "extracted_claims": {
+        "hero_headline": "The platform that moves at the speed of business",
+        "subheadline": "Airtable AI automates your most complex operational workflows.",
+        "cta_text": "Get started free",
+        "pricing_text": "Free for individuals. Plus: $10/seat/month. Pro: $20/seat/month. Enterprise: custom.",
+        "feature_bullets": ["AI-powered field suggestions", "Automated workflow actions", "Branded interfaces", "Granular permissions", "Data sync"],
+        "social_proof": ["Trusted by 300,000+ organizations", "Winner: G2 Best Software 2024"],
+        "audience_terms": ["operations leaders", "builders", "enterprise", "product managers"],
+        "major_claims": ["Move at the speed of your business", "AI that executes, not just suggests", "Customizable to your exact process"]
+      }
+    },
+    {
+      "seed_id": "snap10", "source_seed_id": "s9", "competitor_seed_id": "c5",
+      "captured_at": "2025-12-01T08:00:00Z",
+      "raw_content": "Great teams are built on clarity.",
+      "extracted_claims": {
+        "hero_headline": "Great teams are built on clarity",
+        "subheadline": "Asana helps teams orchestrate their work, from daily tasks to strategic initiatives.",
+        "cta_text": "Get started for free",
+        "pricing_text": null,
+        "feature_bullets": ["Project timelines", "Goals and milestones", "Workload management", "Reporting dashboards", "Integrations"],
+        "social_proof": ["Trusted by 139,000+ paying customers", "Used by teams at Spotify, Amazon, and Deloitte"],
+        "audience_terms": ["teams", "operations", "cross-functional teams", "enterprise"],
+        "major_claims": ["Clarity at every level of work", "Connect work to company goals", "See how all the pieces fit together"]
+      }
+    },
+    {
+      "seed_id": "snap11", "source_seed_id": "s9", "competitor_seed_id": "c5",
+      "captured_at": "2026-02-28T08:00:00Z",
+      "raw_content": "Make work flow. Asana AI brings intelligence to every step of your workflow.",
+      "extracted_claims": {
+        "hero_headline": "Make work flow",
+        "subheadline": "Asana Intelligence helps teams focus on work that matters and move faster.",
+        "cta_text": "Try Asana for free",
+        "pricing_text": "Personal: free forever. Starter: $10.99/user/month. Advanced: $24.99/user/month. Enterprise: custom.",
+        "feature_bullets": ["Asana AI smart summaries", "Goal tracking", "Portfolio reporting", "Custom rules and triggers", "Time tracking"],
+        "social_proof": ["139,000+ organizations rely on Asana", "Leader in G2 Project Management, Spring 2024"],
+        "audience_terms": ["teams", "ops leaders", "program managers", "enterprise buyers"],
+        "major_claims": ["AI that helps you focus on the work that matters most", "Link every task to company strategy", "Reduce status meetings with automated updates"]
+      }
+    }
+  ],
+  "diffs": [
+    {
+      "seed_id": "d1", "source_seed_id": "s1", "competitor_seed_id": "c1",
+      "snapshot_before_seed_id": "snap1", "snapshot_after_seed_id": "snap2",
+      "change_type": "changed_positioning", "field": "hero_headline",
+      "before_value": "One workspace for your notes, docs, and projects",
+      "after_value": "Connected workspace for modern teams", "detected_at": "2026-01-15T10:00:00Z"
+    },
+    {
+      "seed_id": "d2", "source_seed_id": "s1", "competitor_seed_id": "c1",
+      "snapshot_before_seed_id": "snap1", "snapshot_after_seed_id": "snap2",
+      "change_type": "changed_cta", "field": "cta_text",
+      "before_value": "Get Notion free", "after_value": "Try Notion AI free",
+      "detected_at": "2026-01-15T10:00:00Z"
+    },
+    {
+      "seed_id": "d3", "source_seed_id": "s1", "competitor_seed_id": "c1",
+      "snapshot_before_seed_id": "snap1", "snapshot_after_seed_id": "snap2",
+      "change_type": "added_claim", "field": "major_claims",
+      "before_value": null, "after_value": "AI-powered workspace that learns from your team",
+      "detected_at": "2026-01-15T10:00:00Z"
+    },
+    {
+      "seed_id": "d4", "source_seed_id": "s3", "competitor_seed_id": "c2",
+      "snapshot_before_seed_id": "snap4", "snapshot_after_seed_id": "snap5",
+      "change_type": "changed_positioning", "field": "hero_headline",
+      "before_value": "One app to replace them all", "after_value": "The everything app for work",
+      "detected_at": "2026-02-10T10:00:00Z"
+    },
+    {
+      "seed_id": "d5", "source_seed_id": "s3", "competitor_seed_id": "c2",
+      "snapshot_before_seed_id": "snap4", "snapshot_after_seed_id": "snap5",
+      "change_type": "changed_pricing", "field": "pricing_text",
+      "before_value": null, "after_value": "Free plan: 100MB storage. Unlimited: $7/user/month. Business: $12/user/month.",
+      "detected_at": "2026-02-10T10:00:00Z"
+    },
+    {
+      "seed_id": "d6", "source_seed_id": "s3", "competitor_seed_id": "c2",
+      "snapshot_before_seed_id": "snap4", "snapshot_after_seed_id": "snap5",
+      "change_type": "added_claim", "field": "major_claims",
+      "before_value": null, "after_value": "Save 3+ hours per week per person",
+      "detected_at": "2026-02-10T10:00:00Z"
+    },
+    {
+      "seed_id": "d7", "source_seed_id": "s5", "competitor_seed_id": "c3",
+      "snapshot_before_seed_id": "snap6", "snapshot_after_seed_id": "snap7",
+      "change_type": "changed_positioning", "field": "hero_headline",
+      "before_value": "A Work OS that lets your team run projects your way",
+      "after_value": "Made for the way your team actually works", "detected_at": "2026-02-20T10:00:00Z"
+    },
+    {
+      "seed_id": "d8", "source_seed_id": "s5", "competitor_seed_id": "c3",
+      "snapshot_before_seed_id": "snap6", "snapshot_after_seed_id": "snap7",
+      "change_type": "changed_audience", "field": "audience_terms",
+      "before_value": "teams, cross-functional teams, project managers, enterprise",
+      "after_value": "teams, ops leaders, sales teams, dev teams, enterprise",
+      "detected_at": "2026-02-20T10:00:00Z"
+    },
+    {
+      "seed_id": "d9", "source_seed_id": "s7", "competitor_seed_id": "c4",
+      "snapshot_before_seed_id": "snap8", "snapshot_after_seed_id": "snap9",
+      "change_type": "changed_positioning", "field": "hero_headline",
+      "before_value": "Create apps, not just spreadsheets",
+      "after_value": "The platform that moves at the speed of business", "detected_at": "2026-02-15T10:00:00Z"
+    },
+    {
+      "seed_id": "d10", "source_seed_id": "s9", "competitor_seed_id": "c5",
+      "snapshot_before_seed_id": "snap10", "snapshot_after_seed_id": "snap11",
+      "change_type": "changed_positioning", "field": "hero_headline",
+      "before_value": "Great teams are built on clarity", "after_value": "Make work flow",
+      "detected_at": "2026-02-28T10:00:00Z"
+    },
+    {
+      "seed_id": "d11", "source_seed_id": "s9", "competitor_seed_id": "c5",
+      "snapshot_before_seed_id": "snap10", "snapshot_after_seed_id": "snap11",
+      "change_type": "changed_cta", "field": "cta_text",
+      "before_value": "Get started for free", "after_value": "Try Asana for free",
+      "detected_at": "2026-02-28T10:00:00Z"
+    }
+  ],
+  "insights": [
+    {
+      "seed_id": "i1",
+      "title": "Notion pivots hero messaging toward AI positioning",
+      "insight_type": "messaging_shift",
+      "summary": "Notion changed its hero headline from individual/personal productivity framing to 'modern teams' and added AI as the primary CTA driver. This is a significant positioning shift away from personal use toward collaborative team AI.",
+      "recommendation": "Consider testing 'AI-native workspace for teams' framing in your own positioning if you serve knowledge workers. Monitor whether Notion's individual user base responds positively.",
+      "reasoning": "Notion's hero headline shifted from 'One workspace for your notes, docs, and projects' (December 2025) to 'Connected workspace for modern teams' (January 2026). The CTA simultaneously shifted from 'Get Notion free' to 'Try Notion AI free'. This indicates Notion is deliberately pivoting from individual productivity positioning to team collaboration + AI, likely in response to competitive pressure from ClickUp's 'everything app' framing.",
+      "novelty_score": 0.85, "frequency_score": 0.6, "relevance_score": 0.9, "priority_score": 0.88,
+      "competitor_seed_ids": ["c1"]
+    },
+    {
+      "seed_id": "i2",
+      "title": "AI productivity claim is now universal across all 5 competitors",
+      "insight_type": "overused_angle",
+      "summary": "All 5 tracked competitors now lead with AI as a headline feature. The AI positioning angle is saturated — it is no longer a differentiator.",
+      "recommendation": "If competing in this space, avoid leading with 'AI-powered' as a hero claim. Instead, lead with a specific, quantified outcome or a trust-building angle that AI-fatigued buyers will respond to.",
+      "reasoning": "Within a 90-day window (Dec 2025 – Feb 2026), all 5 competitors updated their hero messaging or CTAs to reference AI. Notion: 'Try Notion AI', ClickUp: 'ClickUp Brain', Monday: 'monday AI', Airtable: 'Airtable AI', Asana: 'Asana Intelligence'. The frequency of this signal across the full competitor set indicates saturation, not differentiation.",
+      "novelty_score": 0.55, "frequency_score": 0.98, "relevance_score": 0.92, "priority_score": 0.85,
+      "competitor_seed_ids": ["c1", "c2", "c3", "c4", "c5"]
+    },
+    {
+      "seed_id": "i3",
+      "title": "ClickUp now explicitly quantifies time savings: '3+ hours/week'",
+      "insight_type": "messaging_shift",
+      "summary": "ClickUp added a specific time-savings claim ('Save 3+ hours per week per person') to their hero positioning. This moves ClickUp from feature quantity framing to outcome-driven proof.",
+      "recommendation": "Track whether ClickUp tightens this claim with case study backup. If it performs, expect competitors to counter with their own time-savings metrics.",
+      "reasoning": "The claim 'Save 3+ hours per week per person' was not present in ClickUp's December 2025 snapshot but appeared in the February 2026 snapshot alongside a CTA and pricing update. This is the only quantified work-time outcome claim across the 5 tracked competitors.",
+      "novelty_score": 0.75, "frequency_score": 0.4, "relevance_score": 0.85, "priority_score": 0.78,
+      "competitor_seed_ids": ["c2"]
+    },
+    {
+      "seed_id": "i4",
+      "title": "Monday.com expands audience from project managers to ops/sales/dev",
+      "insight_type": "messaging_shift",
+      "summary": "Monday.com's latest snapshot shows a deliberate audience expansion from 'cross-functional teams, project managers' to 'ops leaders, sales teams, dev teams'.",
+      "recommendation": "If you operate in project management, monitor Monday's win rates in sales and dev segments. Their expansion may dilute project management focus — an opportunity to double down on PM depth messaging.",
+      "reasoning": "The February 2026 snapshot of monday.com shows audience terms including 'sales teams' and 'dev teams' — segments not present in December 2025. Combined with the addition of 'Sales CRM built-in' and 'Dev sprints' as feature bullets, this confirms a deliberate horizontal expansion play.",
+      "novelty_score": 0.7, "frequency_score": 0.45, "relevance_score": 0.8, "priority_score": 0.73,
+      "competitor_seed_ids": ["c3"]
+    },
+    {
+      "seed_id": "i5",
+      "title": "Whitespace: Individual productivity is unclaimed by any competitor",
+      "insight_type": "whitespace",
+      "summary": "Every tracked competitor leads with team collaboration and team-first messaging. No competitor explicitly owns 'individual contributor productivity'. This is an underused positioning lane.",
+      "recommendation": "Test hero messaging targeting individual contributors: 'Your work, your way — no meeting required'. Run a solo-user pricing and onboarding flow.",
+      "reasoning": "Scoring across the collaboration_vs_individual dimension shows all 5 competitors cluster at +0.4 to +0.8 (team-first). No competitor scores below 0.0 on this axis. Audience terms across all landing pages reference 'teams', 'cross-functional', and 'organization' — with no explicit individual contributor framing.",
+      "novelty_score": 0.9, "frequency_score": 0.3, "relevance_score": 0.88, "priority_score": 0.86,
+      "competitor_seed_ids": ["c1", "c2", "c3", "c4", "c5"]
+    }
+  ],
+  "insight_sources": [
+    {
+      "insight_seed_id": "i1", "snapshot_seed_id": "snap1", "diff_seed_id": "d1",
+      "snippet": "One workspace for your notes, docs, and projects",
+      "before_snippet": "One workspace for your notes, docs, and projects",
+      "after_snippet": "Connected workspace for modern teams", "field": "hero_headline"
+    },
+    {
+      "insight_seed_id": "i1", "snapshot_seed_id": "snap2", "diff_seed_id": "d2",
+      "snippet": "Try Notion AI free",
+      "before_snippet": "Get Notion free", "after_snippet": "Try Notion AI free", "field": "cta_text"
+    },
+    {
+      "insight_seed_id": "i2", "snapshot_seed_id": "snap2", "diff_seed_id": "d3",
+      "snippet": "AI-powered workspace that learns from your team",
+      "before_snippet": null, "after_snippet": "AI-powered workspace that learns from your team", "field": "major_claims"
+    },
+    {
+      "insight_seed_id": "i2", "snapshot_seed_id": "snap5", "diff_seed_id": "d4",
+      "snippet": "ClickUp Brain uses AI to summarize, automate, and connect your work context.",
+      "before_snippet": null, "after_snippet": null, "field": "subheadline"
+    },
+    {
+      "insight_seed_id": "i2", "snapshot_seed_id": "snap7", "diff_seed_id": null,
+      "snippet": "AI-powered workflows that speed up every part of your team's work.",
+      "before_snippet": null, "after_snippet": null, "field": "subheadline"
+    },
+    {
+      "insight_seed_id": "i2", "snapshot_seed_id": "snap11", "diff_seed_id": null,
+      "snippet": "Asana Intelligence helps teams focus on work that matters and move faster.",
+      "before_snippet": null, "after_snippet": null, "field": "subheadline"
+    },
+    {
+      "insight_seed_id": "i3", "snapshot_seed_id": "snap5", "diff_seed_id": "d6",
+      "snippet": "Save 3+ hours per week per person",
+      "before_snippet": null, "after_snippet": "Save 3+ hours per week per person", "field": "major_claims"
+    },
+    {
+      "insight_seed_id": "i4", "snapshot_seed_id": "snap7", "diff_seed_id": "d8",
+      "snippet": "ops leaders, sales teams, dev teams, enterprise",
+      "before_snippet": "teams, cross-functional teams, project managers, enterprise",
+      "after_snippet": "teams, ops leaders, sales teams, dev teams, enterprise", "field": "audience_terms"
+    },
+    {
+      "insight_seed_id": "i5", "snapshot_seed_id": "snap1", "diff_seed_id": null,
+      "snippet": "Used by over 30 million people — teams, individuals, startups, enterprise",
+      "before_snippet": null, "after_snippet": null, "field": "audience_terms"
+    },
+    {
+      "insight_seed_id": "i5", "snapshot_seed_id": "snap4", "diff_seed_id": null,
+      "snippet": "3M+ teams use ClickUp — Rated #1 productivity software on G2",
+      "before_snippet": null, "after_snippet": null, "field": "social_proof"
+    },
+    {
+      "insight_seed_id": "i5", "snapshot_seed_id": "snap10", "diff_seed_id": null,
+      "snippet": "Great teams are built on clarity — Asana helps teams orchestrate their work",
+      "before_snippet": null, "after_snippet": null, "field": "hero_headline"
+    }
+  ]
+}
