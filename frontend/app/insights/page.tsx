@@ -43,7 +43,7 @@ export default function InsightsPage() {
     <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
       <div>
         <h1 style={{ fontSize: 24, fontWeight: 700, margin: 0 }}>Insights</h1>
-        <p style={{ fontSize: 14, color: 'var(--text-secondary)', marginTop: 4 }}>{insights.length} scored insights · sorted by priority</p>
+        <p style={{ fontSize: 14, color: 'var(--text-secondary)', marginTop: 4 }}>{insights.length} evidence-backed insights · sorted by priority</p>
       </div>
       <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
         {TYPES.map(t => (
@@ -59,7 +59,13 @@ export default function InsightsPage() {
         ))}
       </div>
       {filtered.length === 0 ? (
-        <div className="card" style={{ padding: 32, textAlign: 'center' }}><p style={{ color: 'var(--text-muted)', fontSize: 15, margin: 0 }}>No insights match this filter.</p></div>
+        <div className="card" style={{ padding: 48, textAlign: 'center' }}>
+          <div style={{ fontSize: 32, marginBottom: 12 }}>🛡️</div>
+          <h3 style={{ fontSize: 18, margin: '0 0 8px', color: 'var(--text-primary)' }}>Evidence Collection Mode</h3>
+          <p style={{ color: 'var(--text-muted)', fontSize: 15, margin: '0 auto', maxWidth: 500, lineHeight: 1.5 }}>
+            No synthetic insights detected. To maintain uncompromised trust during live demos, <strong>Live Extraction</strong> strictly prioritizes raw evidence capture without attempting speculative insight generation. For the full strategic experience, run <strong>Load Demo Data</strong>.
+          </p>
+        </div>
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
           {filtered.map(ins => (
@@ -69,8 +75,8 @@ export default function InsightsPage() {
                   <div style={{ flex: '1 1 500px', minWidth: 0 }}>
                     <div style={{ display: 'flex', gap: 10, alignItems: 'center', marginBottom: 12 }}>
                       <span className={`badge ${INSIGHT_TYPE_BADGE[ins.insight_type] || 'badge-gray'}`}>{ins.insight_type.replace(/_/g, ' ')}</span>
-                      <span style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-muted)' }}>{ins.competitor_names.join(', ')}</span>
-                      <span style={{ fontSize: 13, color: 'var(--text-muted)', marginLeft: 'auto' }}>{ins.evidence_count} evidence · {new Date(ins.created_at).toLocaleDateString()}</span>
+                      <span style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-muted)' }}>{(ins.competitor_names || []).join(', ')}</span>
+                      <span style={{ fontSize: 13, color: 'var(--text-muted)', marginLeft: 'auto' }}>{ins.evidence_count} evidence · {ins.created_at.split('T')[0]}</span>
                     </div>
                     <h3 style={{ fontSize: 17, fontWeight: 700, color: 'var(--text-primary)', margin: '0 0 8px', lineHeight: 1.4 }}>{ins.title}</h3>
                     <p style={{ fontSize: 14, color: 'var(--text-secondary)', margin: '0 0 16px', lineHeight: 1.6, overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>{ins.summary}</p>

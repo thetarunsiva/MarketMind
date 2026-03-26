@@ -60,15 +60,29 @@ export default function ComparisonPage() {
     getComparison().then(setData).catch(e => setError(e.message)).finally(() => setLoading(false));
   }, []);
 
-  if (loading) return <div style={{ color: 'var(--text-muted)', fontSize: 15, paddingTop: 100, textAlign: 'center' }}>Loading comparison map…</div>;
-  if (error) return <div style={{ color: 'var(--accent-red)', fontSize: 15, padding: 32, textAlign: 'center' }}>⚠ {error}</div>;
-  if (!data) return null;
+  if (loading) return (
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 400, color: 'var(--accent-purple)', fontSize: 16, fontWeight: 600 }}>
+      <span style={{ animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite' }}>Generating Positioning Map…</span>
+    </div>
+  );
+  if (error) return <div className="card" style={{ maxWidth: 500, margin: '100px auto', padding: 40, textAlign: 'center', borderTop: '4px solid var(--accent-pink)' }}><h3 style={{ color: 'var(--text-primary)' }}>System Offline</h3><p style={{ color: 'var(--text-secondary)' }}>{error}</p></div>;
+  if (!data || data.competitors.length === 0) return (
+    <div className="card" style={{ padding: 64, textAlign: 'center' }}>
+      <div style={{ fontSize: 40, marginBottom: 16 }}>📊</div>
+      <h3 style={{ fontSize: 20, margin: '0 0 8px', color: 'var(--text-primary)' }}>No Comparison Data Available</h3>
+      <p style={{ color: 'var(--text-muted)', fontSize: 15, margin: 0 }}>Load demo data to see the competitive landscape visualization.</p>
+    </div>
+  );
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
       <div>
-        <h1 style={{ fontSize: 26, fontWeight: 700, margin: 0 }}>Competitor Comparison</h1>
-        <p style={{ fontSize: 16, color: 'var(--text-secondary)', marginTop: 6, lineHeight: 1.6 }}>Positioning scores on fixed strategic dimensions. Scale: -1 (left pole) to +1 (right pole).</p>
+        <h1 style={{ fontSize: 40, fontWeight: 900, letterSpacing: '-0.03em', margin: 0, color: 'var(--text-primary)' }}>
+          Strategic <span className="gradient-accent">Positioning Map</span>
+        </h1>
+        <p style={{ fontSize: 15, color: 'var(--text-secondary)', marginTop: 8, fontWeight: 600, letterSpacing: '0.02em', textTransform: 'uppercase' }}>
+          Mapping competitive logic across 6 strategic dimensions
+        </p>
       </div>
       <div className="card" style={{ padding: '24px 32px' }}>
         <h2 style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-secondary)', margin: '0 0 28px', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Positioning Map</h2>

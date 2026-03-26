@@ -375,5 +375,52 @@
       "snippet": "Great teams are built on clarity — Asana helps teams orchestrate their work",
       "before_snippet": null, "after_snippet": null, "field": "hero_headline"
     }
+  ],
+  "geo_signals": [
+    {
+      "provider": "ChatGPT-4",
+      "prompt": "best productivity tools for small teams",
+      "surfaced_companies": ["Notion", "ClickUp", "Monday.com"],
+      "appearance_frequency": 0.95,
+      "rank": 1,
+      "response_snippet": "Notion and ClickUp are highly recommended for small teams due to their flexibility...",
+      "extracted_reasoning": "Strong bias toward all-in-one workspaces with low initial cost."
+    },
+    {
+      "provider": "Claude 3.5 Sonnet",
+      "prompt": "best alternatives to Notion",
+      "surfaced_companies": ["ClickUp", "Monday.com"],
+      "appearance_frequency": 0.88,
+      "rank": 1,
+      "response_snippet": "If Notion's lack of structure is an issue, ClickUp and Monday.com offer more rigid project management...",
+      "extracted_reasoning": "Surfaced primarily when users express fatigue with Notion's blank canvas."
+    },
+    {
+      "provider": "Perplexity",
+      "prompt": "top collaboration tools for startups",
+      "surfaced_companies": ["Notion", "Asana"],
+      "appearance_frequency": 0.92,
+      "rank": 2,
+      "response_snippet": "Startups frequently pair Slack with Notion for docs, or Asana for pure task tracking...",
+      "extracted_reasoning": "Categorizes Notion as docs-first and Asana as task-first."
+    },
+    {
+      "provider": "ChatGPT-4",
+      "prompt": "best workflow tools for remote teams",
+      "surfaced_companies": ["Asana", "Monday.com", "ClickUp"],
+      "appearance_frequency": 0.85,
+      "rank": 1,
+      "response_snippet": "For remote teams needing to standardize workflows, Asana and Monday provide excellent visibility...",
+      "extracted_reasoning": "Rewards strict process enforcement and timeline views for remote management."
+    },
+    {
+      "provider": "Claude 3.5 Sonnet",
+      "prompt": "tools for docs plus project tracking",
+      "surfaced_companies": ["Notion", "ClickUp"],
+      "appearance_frequency": 0.90,
+      "rank": 1,
+      "response_snippet": "Notion is the leader for docs-first project tracking, while ClickUp is better if you need tasks-first...",
+      "extracted_reasoning": "Pits Notion's document model tightly against ClickUp's list model."
+    }
   ]
 }

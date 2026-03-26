@@ -4,22 +4,54 @@
  */
 import type {
   Competitor, Change, InsightListItem, InsightDetail,
-  ComparisonResponse, WhitespaceResponse, CrawlResult, HealthStatus, Snapshot,
+  ComparisonResponse, WhitespaceResponse, CrawlResult, HealthStatus, Snapshot, GeoResponse,
+  RecommendationsResponse,
 } from '@/types';
 
 const BASE = (process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8000').replace(/\/$/, '');
 
-async function fetchJSON<T>(path: string, options?: RequestInit): Promise<T> {
+const FETCH_TIMEOUT_MS = 15_000; // 15s — prevents infinite hangs during demos
+
+async function fetchJSON<T>(path: string, options?: RequestInit, _retry = true): Promise<T> {
   const cleanPath = path.startsWith('/') ? path : `/${path}`;
-  const res = await fetch(`${BASE}${cleanPath}`, {
-    ...options,
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-  });
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({ detail: res.statusText }));
-    throw new Error(err.detail || `HTTP ${res.status}`);
+  const url = `${BASE}${cleanPath}`;
+
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
+
+  try {
+    const res = await fetch(url, {
+      cache: 'no-store',
+      ...options,
+      signal: controller.signal,
+      headers: { 'Content-Type': 'application/json', ...options?.headers },
+    });
+    clearTimeout(timer);
+
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({ detail: res.statusText }));
+      throw new Error(err.detail || `HTTP ${res.status}`);
+    }
+    return res.json();
+  } catch (e: unknown) {
+    clearTimeout(timer);
+    const err = e as Error;
+
+    // Retry once on network / timeout errors (not on HTTP errors)
+    if (_retry && (err.name === 'AbortError' || err.message === 'Failed to fetch' || err.message?.includes('fetch'))) {
+      console.warn(`[API] Retrying ${cleanPath} after: ${err.message}`);
+      return fetchJSON<T>(path, options, false);
+    }
+
+    // Produce human-readable error for UI
+    if (err.name === 'AbortError') {
+      throw new Error('Backend request timed out. Please check that the backend server is running.');
+    }
+    if (err.message === 'Failed to fetch') {
+      throw new Error('Cannot reach the backend server. Please verify it is running and accessible.');
+    }
+    throw err;
   }
-  return res.json();
 }
 
 export async function getHealth(): Promise<HealthStatus> {
@@ -65,4 +97,14 @@ export async function runCrawl(mode: 'demo' | 'live' = 'demo'): Promise<CrawlRes
     method: 'POST',
     body: JSON.stringify({ mode }),
   });
+}
+
+export async function getGeoSignals(limit = 50, target = 'Notion'): Promise<GeoResponse> {
+  const q = new URLSearchParams({ limit: String(limit), target });
+  return fetchJSON<GeoResponse>(`/api/v1/geo?${q}`);
+}
+
+export async function getRecommendationsV2(target = 'Notion'): Promise<RecommendationsResponse> {
+  const q = new URLSearchParams({ target });
+  return fetchJSON<RecommendationsResponse>(`/api/v1/recommendations?${q}`);
 }

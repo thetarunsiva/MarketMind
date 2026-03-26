@@ -134,6 +134,36 @@ messaging_shift · pricing_change · repeated_angle · overused_angle · whitesp
 
 ---
 
+### `geo_signals`
+
+| Column | Type | Nullable | Notes |
+|--------|------|----------|-------|
+| `id` | uuid PK | No | |
+| `provider` | text | No | e.g. `"ChatGPT-4"`, `"Claude 3.5"` |
+| `prompt` | text | No | The LLM prompt used |
+| `surfaced_companies` | text[] | No | Array of competitor names |
+| `appearance_frequency` | float8 | No | `0.0–1.0` frequency metric |
+| `rank` | int4 | **Yes** | Priority ranking if discernible |
+| `response_snippet` | text | **Yes** | Partial LLM reasoning |
+| `extracted_reasoning` | text | **Yes** | What the LLM said about this set |
+| `created_at` | timestamptz | No | Automatic |
+
+---
+
+### `user_profiles` (V2.5 Hackathon Auth)
+
+| Column | Type | Nullable | Notes |
+|--------|------|----------|-------|
+| `id` | uuid PK | No | FK to `auth.users(id)` |
+| `email` | text | No | |
+| `full_name` | text | **Yes** | |
+| `company_name` | text | **Yes** | |
+| `company_domain_category`| text | **Yes** | From allowed categories dropdown |
+| `role` | text | No | Default `'user'`. `'admin'` for admin panel |
+| `created_at` | timestamptz | No | Auto-set by default `now()` |
+
+---
+
 ## Relationships
 
 ```

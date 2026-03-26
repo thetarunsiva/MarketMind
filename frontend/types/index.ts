@@ -142,3 +142,85 @@ export interface HealthStatus {
   mode: string;
   version: string;
 }
+
+export interface GeoSignal {
+  id: string;
+  provider: string;
+  prompt: string;
+  prompt_category?: string | null;
+  surfaced_companies: string[];
+  appearance_frequency: number;
+  rank: number | null;
+  signal_strength?: 'strong' | 'moderate' | 'weak' | null;
+  response_snippet: string | null;
+  extracted_reasoning: string | null;
+  created_at: string;
+}
+
+export interface GeoCompanyFrequency {
+  company: string;
+  total_frequency: number;
+  prompt_count: number;
+  avg_rank: number | null;
+  best_rank: number | null;
+}
+
+export interface GeoSummary {
+  total_prompts: number;
+  total_providers: number;
+  prompt_categories: string[];
+  company_frequencies: GeoCompanyFrequency[];
+  coverage_ratio: number;
+}
+
+export interface GeoResponse {
+  signals: GeoSignal[];
+  summary: GeoSummary;
+}
+
+// --- V2: Recommendation Engine ---
+
+export interface RecommendationEvidenceItem {
+  source_type: 'website' | 'geo';
+  source_label: string;
+  snippet: string;
+  competitor: string;
+  signal_reason?: string;
+}
+
+export interface RecommendationV2 {
+  id: string;
+  target_company: string;
+  title: string;
+  recommendation_type: 'messaging' | 'pricing' | 'segment' | 'geo' | 'competitive_response';
+  executive_summary: string;
+  why_it_matters: string;
+  evidence_summary: string;
+  website_signal_weight: number;
+  geo_signal_weight: number;
+  supporting_competitors: string[];
+  confidence: 'high' | 'medium' | 'low';
+  next_test: string;
+  evidence_items: RecommendationEvidenceItem[];
+  future_signal_preview?: string | null;
+}
+
+export interface RecommendationsResponse {
+  generated_at: string;
+  target_company: string;
+  mode: string;
+  recommendations: RecommendationV2[];
+}
+
+// --- V2: Predictive Preview ---
+
+export interface PredictivePreview {
+  id: string;
+  title: string;
+  summary: string;
+  direction: 'likely_up' | 'likely_down' | 'stable' | 'emerging';
+  confidence: string;
+  basis: string;
+  disclaimer: string;
+}
+

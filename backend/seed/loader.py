@@ -37,9 +37,9 @@ def run_seed(force: bool = False) -> dict:
 
     # Insert competitors
     for comp in data["competitors"]:
-        row = queries.insert_competitor(comp["name"], comp["website"], comp["category"])
+        row = queries.upsert_competitor(comp["name"], comp["website"], comp["category"])
         competitor_id_map[comp["seed_id"]] = row["id"]
-        logger.info(f"[SEED] Competitor inserted: {comp['name']}")
+        logger.info(f"[SEED] Competitor upserted: {comp['name']}")
 
     # Insert sources
     for src in data["sources"]:
@@ -120,6 +120,22 @@ def run_seed(force: bool = False) -> dict:
         })
 
     logger.info("[SEED] All insight evidence links inserted")
+
+    geo_count = 0
+    if "geo_signals" in data:
+        for geo in data["geo_signals"]:
+            queries.insert_geo_signal({
+                "provider": geo["provider"],
+                "prompt": geo["prompt"],
+                "surfaced_companies": geo["surfaced_companies"],
+                "appearance_frequency": geo["appearance_frequency"],
+                "rank": geo.get("rank"),
+                "response_snippet": geo.get("response_snippet"),
+                "extracted_reasoning": geo.get("extracted_reasoning"),
+            })
+            geo_count += 1
+        logger.info(f"[SEED] {geo_count} GEO signals inserted")
+
     logger.info("[SEED] Seed complete")
 
     return {
@@ -129,4 +145,5 @@ def run_seed(force: bool = False) -> dict:
         "snapshots": len(data["snapshots"]),
         "diffs": len(data["diffs"]),
         "insights": len(data["insights"]),
+        "geo_signals": geo_count,
     }

@@ -12,13 +12,15 @@ import db.queries as queries
 router = APIRouter()
 logger = logging.getLogger(__name__)
 
+from typing import Optional
 
 @router.post("/crawl/run", response_model=CrawlResponse)
-async def run_crawl(req: CrawlRequest):
-    mode = req.mode or os.getenv("APP_MODE", "demo")
-    logger.info(f"[CRAWL] Mode: {mode}")
+async def run_crawl(mode: Optional[str] = None, req: Optional[CrawlRequest] = None):
+    req_mode = req.mode if req else None
+    final_mode = mode or req_mode or os.getenv("APP_MODE", "demo")
+    logger.info(f"[CRAWL] Mode: {final_mode}")
 
-    if mode == "demo":
+    if final_mode == "demo":
         summary = run_seed(force=False)
         if summary.get("skipped"):
             competitors = queries.get_all_competitors()
@@ -39,11 +41,12 @@ async def run_crawl(req: CrawlRequest):
             message=f"Demo seed complete: {summary['competitors']} competitors, {summary['snapshots']} snapshots, {summary['insights']} insights",
         )
 
-    elif mode == "live":
+    elif final_mode == "live":
         # Live mode: attempt real crawling — fallback to demo if unavailable
         try:
             from services.live_crawler import crawl_all
-            result = await crawl_all(req.competitor_ids)
+            comp_ids = req.competitor_ids if req else None
+            result = await crawl_all(comp_ids)
             logger.info(f"[CRAWL] Live crawl complete: {result}")
             return CrawlResponse(mode="live", **result)
         except Exception as e:
@@ -59,4 +62,4 @@ async def run_crawl(req: CrawlRequest):
             )
 
     else:
-        raise HTTPException(status_code=400, detail=f"Invalid mode: {mode}. Use 'demo' or 'live'.")
+        raise HTTPException(status_code=400, detail=f"Invalid mode: {final_mode}. Use 'demo' or 'live'.")

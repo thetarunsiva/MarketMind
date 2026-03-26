@@ -31,7 +31,13 @@ export default function ChangesPage() {
         <p style={{ fontSize: 14, color: 'var(--text-secondary)', marginTop: 4 }}>{changes.length} detected changes from snapshot comparisons</p>
       </div>
       {changes.length === 0 ? (
-        <div className="card" style={{ padding: 32, textAlign: 'center' }}><p style={{ color: 'var(--text-muted)', fontSize: 15, margin: 0 }}>No changes detected. Load demo data from the dashboard.</p></div>
+        <div className="card" style={{ padding: 48, textAlign: 'center' }}>
+          <div style={{ fontSize: 32, marginBottom: 12 }}>🛡️</div>
+          <h3 style={{ fontSize: 18, margin: '0 0 8px', color: 'var(--text-primary)' }}>Evidence Collection Mode</h3>
+          <p style={{ color: 'var(--text-muted)', fontSize: 15, margin: '0 auto', maxWidth: 500, lineHeight: 1.5 }}>
+            No synthetic changes detected. To prevent hallucinations during live demos, <strong>Live Extraction</strong> strictly prioritizes raw evidence capture (snapshots). For full strategic change tracking, run <strong>Load Demo Data</strong> from the dashboard.
+          </p>
+        </div>
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
           {changes.map(ch => (
@@ -40,9 +46,9 @@ export default function ChangesPage() {
                 <span className={`badge ${CHANGE_TYPE_BADGE[ch.change_type] || 'badge-gray'}`}>{CHANGE_TYPE_LABEL[ch.change_type] || ch.change_type}</span>
                 <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: 8 }}>
                   <span style={{ fontSize: 15, fontWeight: 700, color: 'var(--text-primary)' }}>{ch.competitor_name}</span>
-                  <span style={{ fontSize: 13, color: 'var(--text-muted)' }}>· {ch.field.replace(/_/g, ' ')}</span>
+                  <span style={{ fontSize: 13, color: 'var(--text-muted)' }}>· {ch.field?.replace(/_/g, ' ') || 'system'}</span>
                 </div>
-                <span style={{ fontSize: 13, color: 'var(--text-muted)', whiteSpace: 'nowrap', fontWeight: 500 }}>{new Date(ch.detected_at).toLocaleDateString()}</span>
+                <span style={{ fontSize: 13, color: 'var(--text-muted)', whiteSpace: 'nowrap', fontWeight: 500 }}>{ch.detected_at.split('T')[0]}</span>
               </div>
               {ch.before && (
                 <div style={{ marginBottom: 12, padding: '12px 16px', background: 'rgba(240,85,85,0.05)', borderRadius: 8, borderLeft: '3px solid var(--accent-red)' }}>

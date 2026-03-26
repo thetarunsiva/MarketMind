@@ -278,10 +278,10 @@ API base: /api/v1
     {
       "id": "3f2a1c9e-...",
       "title": "Whitespace: Collaboration/Teamwork vs. Individual Productivity",
-      "summary": "All 5 tracked competitors position strongly toward team collaboration...",
-      "why_it_matters": "All 5 tracked competitors position strongly toward team collaboration. This creates an unclaimed positioning lane for individual productivity...",
-      "why_its_whitespace": "Dimension average score: 0.54 (scale: -1 to +1). Values above ±0.25 indicate cluster saturation.",
-      "recommended_action": "Launch an 'individual plan' or 'personal productivity' track...",
+      "summary": "All competitors lead with team collaboration. Individual and personal productivity use cases are underserved.",
+      "why_it_matters": "All 5 tracked competitors position strongly toward team collaboration positioning. This creates an unclaimed positioning lane for individual productivity positioning.",
+      "why_its_whitespace": "Dimension average score: 0.85 (scale: -1 to +1). Values above ±0.25 indicate cluster saturation. GEO Signal Match: The saturated market leader (ClickUp) is also dominating LLM recommendation visibility metrics, making this whitespace even more critical to action.",
+      "recommended_action": "Launch an 'individual plan' or 'personal productivity' track. Target individual contributors.",
       "confidence": "high",
       "dimension": "collaboration_vs_individual",
       "evidence": [
@@ -308,6 +308,35 @@ API base: /api/v1
 | `evidence[].source_url` | string | No | May be empty string `""` if source not found in sources_map |
 
 **Computed fields:** `title`, `summary`, `why_it_matters`, `why_its_whitespace`, `recommended_action` — all deterministic text templates in `whitespace_engine.py`. No LLM.
+
+## GET /api/v1/geo
+
+**Response — array of GEO signals:**
+```json
+[
+  {
+    "id": "...",
+    "provider": "ChatGPT-4",
+    "prompt": "best alternatives to Notion",
+    "surfaced_companies": ["ClickUp", "Asana"],
+    "appearance_frequency": 0.9,
+    "rank": 2,
+    "response_snippet": "ClickUp offers a more structured approach...",
+    "extracted_reasoning": "Strong bias toward structure over flexibility.",
+    "created_at": "2026-03-25T17:45:03+00:00"
+  }
+]
+```
+
+| Field | Type | Nullable | Notes |
+|-------|------|----------|-------|
+| `provider` | string | No | e.g. `"ChatGPT-4"`, `"Claude 3.5"` |
+| `prompt` | string | No | The LLM prompt used |
+| `surfaced_companies` | string[] | No | Array of competitor names |
+| `appearance_frequency` | float | No | `0.0–1.0` |
+| `rank` | int | **Yes** | Priority ranking if discernible |
+| `response_snippet` | string | **Yes** | Partial snippet from LLM |
+| `extracted_reasoning` | string | **Yes** | Automated rationale |
 
 ---
 

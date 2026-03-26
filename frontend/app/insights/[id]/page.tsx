@@ -17,7 +17,7 @@ function EvidenceCard({ ev }: { ev: EvidenceItem }) {
         <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-primary)' }}>{ev.competitor_name}</span>
         <span style={{ fontSize: 13, color: 'var(--text-muted)' }}>· {ev.field.replace(/_/g, ' ')}</span>
         <span style={{ fontSize: 12, color: 'var(--text-muted)', marginLeft: 'auto' }}>
-          {new Date(ev.captured_at).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })}
+          {ev.captured_at.split('T')[0]}
         </span>
       </div>
       {ev.before_snippet && (

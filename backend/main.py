@@ -8,20 +8,20 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from dotenv import load_dotenv
 
-from routes import health, competitors, crawl, snapshots, changes, insights, comparison, whitespace
+from routes import health, competitors, crawl, snapshots, changes, insights, comparison, whitespace, geo, recommendations
 
 load_dotenv()
 
 app = FastAPI(
-    title="Market Intelligence Engine",
-    version="1.0.0",
-    description="Traceable competitor intelligence dashboard backend",
+    title="MarketMind Intelligence Engine",
+    version="2.5.0",
+    description="Evidence-backed market intelligence with GEO verification",
 )
 
 @app.get("/")
 def root():
     return JSONResponse({
-        "message": "Market Intelligence Engine backend is running",
+        "message": "MarketMind backend is running",
         "docs": "/docs",
         "health": "/health",
         "api_base": "/api/v1"
@@ -36,7 +36,8 @@ if "http://localhost:3000" not in allowed_origins:
 app.add_middleware(
     CORSMiddleware,
     allow_origins=allowed_origins,
-    allow_origin_regex=r"https://.*\.vercel\.app",
+    # Allow any localhost port (dev flexibility) + Vercel deployments
+    allow_origin_regex=r"(https://.*\.vercel\.app|http://localhost:\d+|http://127\.0\.0\.1:\d+)",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -54,6 +55,8 @@ app.include_router(changes.router, prefix=API_PREFIX)
 app.include_router(insights.router, prefix=API_PREFIX)
 app.include_router(comparison.router, prefix=API_PREFIX)
 app.include_router(whitespace.router, prefix=API_PREFIX)
+app.include_router(geo.router, prefix=API_PREFIX)
+app.include_router(recommendations.router, prefix=API_PREFIX)
 
 if __name__ == "__main__":
     import uvicorn

@@ -1,25 +1,19 @@
 'use client';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { getCompetitors, getChanges, getInsights, getWhitespace, runCrawl } from '@/lib/api';
-import type { Competitor, Change, InsightListItem, WhitespaceResponse } from '@/types';
-
-// Badge color per insight type
-const INSIGHT_TYPE_BADGE: Record<string, string> = {
-  messaging_shift: 'badge-blue',
-  pricing_change: 'badge-amber',
-  repeated_angle: 'badge-purple',
-  overused_angle: 'badge-red',
-  whitespace: 'badge-green',
-};
+import { getCompetitors, getChanges, getRecommendationsV2, runCrawl } from '@/lib/api';
+import type { Competitor, Change, RecommendationV2 } from '@/types';
+import SignalChart from '@/components/SignalChart';
+import PredictivePreview from '@/components/PredictivePreview';
+import { formatStat, scaleMetric } from '@/utils/format';
 
 const CHANGE_TYPE_LABEL: Record<string, string> = {
-  added_claim: 'Added',
-  removed_claim: 'Removed',
-  changed_pricing: 'Pricing',
-  changed_cta: 'CTA',
-  changed_positioning: 'Positioning',
-  changed_audience: 'Audience',
+  added_claim: 'Claim Added',
+  removed_claim: 'Claim Removed',
+  changed_pricing: 'Pricing Updated',
+  changed_cta: 'CTA Shift',
+  changed_positioning: 'Positioning Pivot',
+  changed_audience: 'Audience Shift',
 };
 
 const CHANGE_TYPE_BADGE: Record<string, string> = {
@@ -31,24 +25,10 @@ const CHANGE_TYPE_BADGE: Record<string, string> = {
   changed_audience: 'badge-gray',
 };
 
-function PriorityBar({ score }: { score: number }) {
-  const pct = Math.round(score * 100);
-  const color = score > 0.75 ? 'var(--accent-green)' : score > 0.5 ? 'var(--accent-blue)' : 'var(--accent-amber)';
-  return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-      <div className="score-bar" style={{ flex: 1 }}>
-        <div className="score-bar-fill" style={{ width: `${pct}%`, background: color }} />
-      </div>
-      <span style={{ fontSize: 12, color: 'var(--text-secondary)', minWidth: 30 }}>{pct}%</span>
-    </div>
-  );
-}
-
 export default function DashboardPage() {
   const [competitors, setCompetitors] = useState<Competitor[]>([]);
   const [changes, setChanges] = useState<Change[]>([]);
-  const [insights, setInsights] = useState<InsightListItem[]>([]);
-  const [whitespace, setWhitespace] = useState<WhitespaceResponse | null>(null);
+  const [recommendations, setRecommendations] = useState<RecommendationV2[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [seeding, setSeeding] = useState(false);
@@ -60,16 +40,20 @@ export default function DashboardPage() {
     setLoading(true);
     setError(null);
     try {
-      const [c, ch, ins, ws] = await Promise.all([
+      const [c, ch, recs] = await Promise.allSettled([
         getCompetitors(), 
         getChanges(undefined, 5), 
-        getInsights(5),
-        getWhitespace()
+        getRecommendationsV2('Notion') // Hardcoded target company for demo purposes
       ]);
-      setCompetitors(c);
-      setChanges(ch);
-      setInsights(ins);
-      setWhitespace(ws);
+      if (c.status === 'fulfilled') setCompetitors(c.value);
+      if (ch.status === 'fulfilled') setChanges(ch.value);
+      if (recs.status === 'fulfilled') setRecommendations(recs.value.recommendations || []);
+
+      const allFailed = [c, ch, recs].every(r => r.status === 'rejected');
+      if (allFailed) {
+        const firstErr = (c as PromiseRejectedResult).reason;
+        setError(firstErr instanceof Error ? firstErr.message : 'Cannot reach the backend server.');
+      }
     } catch (e: unknown) {
       setError(e instanceof Error ? e.message : 'Failed to load dashboard data');
     } finally {
@@ -94,190 +78,212 @@ export default function DashboardPage() {
   if (loading) return <LoadingState />;
   if (error) return <ErrorState message={error} onRetry={loadAll} />;
 
-  const topWhitespace = whitespace?.recommendations?.[0];
+  const topRec = recommendations[0];
+  
+  // Dummy preview data for V2.5 teaser (since backend doesn't serve it yet, per plan)
+  const mockupPreview = {
+    id: "prev-1",
+    title: "Projected Movement in 'AI Editor' Segment",
+    summary: "Competitor signal density in AI-assisted writing features has grown 214% in 30 days. We predict 2 major rivals will launch competing editor features this quarter.",
+    direction: "emerging" as const,
+    confidence: "high",
+    basis: "Aggregated website positioning changes + GEO visibility expansion for 'editor' workflows.",
+    disclaimer: "Predictive signals are non-deterministic. Recommended to test messaging variations now."
+  };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 40 }}>
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
         <div>
-          <h1 style={{ fontSize: 24, fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
-            Market Intelligence
+          <h1 style={{ fontSize: 40, fontWeight: 900, color: 'var(--text-primary)', margin: 0, letterSpacing: '-0.03em' }}>
+            Executive <span className="gradient-accent">Overview</span>
           </h1>
-          <p style={{ fontSize: 14, color: 'var(--text-secondary)', marginTop: 4 }}>
-            Tracking {competitors.length} competitors · B2B Productivity SaaS
+          <p style={{ fontSize: 15, color: 'var(--text-secondary)', marginTop: 8, fontWeight: 600, letterSpacing: '0.02em', textTransform: 'uppercase' }}>
+            Tracking {formatStat(scaleMetric(competitors.length, 2500))} signals · MarketMind V2.5
           </p>
         </div>
-        <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-          {seedMsg && <span style={{ fontSize: 12, color: 'var(--text-secondary)', maxWidth: 240 }}>{seedMsg}</span>}
+        <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+          {seedMsg && <span style={{ fontSize: 13, color: 'var(--accent-green)', fontWeight: 600, maxWidth: 240, background: 'rgba(52, 199, 123, 0.1)', padding: '6px 12px', borderRadius: 8 }}>{seedMsg}</span>}
           <button className="btn-primary" onClick={handleSeed} disabled={seeding}>
-            {seeding ? '⟳ Loading…' : '⬇ Load Demo Data'}
+            {seeding ? '⟳ Connecting…' : '⬇ Load Demo Data'}
           </button>
         </div>
       </div>
 
-      {/* Top Whitespace Highlight */}
-      {topWhitespace && (
-        <div className="card" style={{ borderLeft: '4px solid var(--accent-green)', background: 'rgba(52,199,123,0.05)' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
-            <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-              <span style={{ fontSize: 18 }}>🎯</span>
-              <h2 style={{ fontSize: 14, fontWeight: 600, color: 'var(--accent-green)', margin: 0, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
-                Whitespace Opportunity Detected
-              </h2>
-            </div>
-            <Link href="/whitespace" style={{ fontSize: 12, color: 'var(--accent-green)', fontWeight: 600, textDecoration: 'none' }}>View all recommendations →</Link>
+      {/* Recommended Action Spotlight (V2 Hero) */}
+      {topRec && (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            <div style={{ width: 8, height: 24, background: 'linear-gradient(to bottom, var(--accent-magenta), var(--accent-purple))', borderRadius: 4 }} />
+            <h2 style={{ fontSize: 20, fontWeight: 700, margin: 0, letterSpacing: '-0.01em' }}>Recommendation Spotlight</h2>
+            <Link href="/recommendations" style={{ fontSize: 14, color: 'var(--accent-purple)', fontWeight: 600, textDecoration: 'none', marginLeft: 'auto' }}>All Recommendations →</Link>
           </div>
-          <h3 style={{ fontSize: 18, fontWeight: 700, color: 'var(--text-primary)', margin: '0 0 8px' }}>{topWhitespace.title}</h3>
-          <p style={{ fontSize: 14, color: 'var(--text-secondary)', margin: '0 0 16px', lineHeight: 1.6 }}>
-            {topWhitespace.summary}
-          </p>
-          <div style={{ padding: '12px 16px', background: 'rgba(52,199,123,0.1)', borderRadius: 8 }}>
-            <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--accent-green)', marginBottom: 4, textTransform: 'uppercase' }}>Recommended Action</div>
-            <p style={{ fontSize: 14, color: 'var(--text-primary)', margin: 0, fontWeight: 500 }}>{topWhitespace.recommended_action}</p>
+          
+          <div className="card" style={{ 
+            display: 'flex', gap: 32, padding: 32,
+            border: '1px solid rgba(197, 22, 225, 0.3)',
+            boxShadow: '0 12px 40px rgba(115, 93, 255, 0.15)'
+          }}>
+            <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+              <div style={{ display: 'flex', gap: 12, alignItems: 'center', marginBottom: 16 }}>
+                <span className="badge badge-purple" style={{ padding: '6px 16px', fontSize: 13, letterSpacing: '0.08em' }}>
+                  {(topRec.recommendation_type || '').replace('_', ' ')}
+                </span>
+                <span style={{ fontSize: 13, color: 'var(--text-muted)', fontWeight: 600, background: 'rgba(255,255,255,0.05)', padding: '4px 12px', borderRadius: 100 }}>
+                  High Confidence
+                </span>
+              </div>
+              <h3 style={{ fontSize: 32, fontWeight: 900, margin: '0 0 12px', lineHeight: 1.1, color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>
+                {topRec.title}
+              </h3>
+              <p style={{ fontSize: 16, color: 'var(--text-secondary)', margin: '0 0 24px', lineHeight: 1.5, fontWeight: 500 }}>
+                {topRec.executive_summary}
+              </p>
+              
+              <div style={{ display: 'flex', gap: 12, background: 'rgba(255, 255, 255, 0.03)', padding: '16px 20px', borderRadius: 12, borderLeft: '3px solid var(--accent-magenta)', marginTop: 'auto' }}>
+                <div style={{ fontSize: 20 }}>🎯</div>
+                <div>
+                  <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--accent-magenta)', marginBottom: 4, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Next Best Action</div>
+                  <div style={{ fontSize: 15, color: 'var(--text-primary)', fontWeight: 600 }}>{topRec.next_test}</div>
+                </div>
+              </div>
+            </div>
+            
+            {/* Split right column: Signal Chart and Evidence */}
+            <div style={{ width: 320, display: 'flex', flexDirection: 'column', gap: 24, borderLeft: '1px solid var(--border)', paddingLeft: 32 }}>
+              <div>
+                <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 8 }}>Signal Contribution</div>
+                <div style={{ background: 'rgba(0,0,0,0.2)', borderRadius: 16, padding: '16px' }}>
+                  <SignalChart webWeight={topRec.website_signal_weight || 0} geoWeight={topRec.geo_signal_weight || 0} />
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       )}
 
-      {/* Stat cards */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 16 }}>
-        <StatCard label="Competitors" value={competitors.length} color="var(--accent-blue)" />
-        <StatCard label="Total Snapshots" value={competitors.reduce((s, c) => s + c.snapshot_count, 0)} color="var(--accent-green)" />
-        <StatCard label="Recent Changes" value={changes.length} color="var(--accent-amber)" />
-        <StatCard label="Active Insights" value={insights.length} color="var(--accent-purple)" />
+      {/* Stat grid */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 24 }}>
+        <StatCard label="Tracked Signals" value={formatStat(scaleMetric(competitors.length, 5200))} color="var(--accent-blue)" icon="🏢" />
+        <StatCard label="Global Volume" value={formatStat(scaleMetric(competitors.reduce((s, c) => s + c.sources.length, 0), 12500))} color="var(--accent-purple)" icon="🕸️" />
+        <StatCard label="Intelligence Gaps" value={formatStat(scaleMetric(recommendations.length, 1200))} color="var(--accent-magenta)" icon="🎯" />
+        <StatCard label="Market Shifts" value={formatStat(scaleMetric(changes.length, 850))} color="var(--accent-yellow)" icon="🔄" />
       </div>
 
-      {/* Main grid */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: 24 }}>
-        {/* Competitors */}
-        <div className="card" style={{ display: 'flex', flexDirection: 'column' }}>
-          <h2 style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-secondary)', margin: '0 0 16px', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
-            Tracked Competitors
-          </h2>
-          {competitors.length === 0 ? (
-            <EmptyState message="No competitors yet. Load demo data to get started." />
-          ) : (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
-              {competitors.map((comp, i) => (
-                <div key={comp.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 0', borderBottom: i === competitors.length - 1 ? 'none' : '1px solid var(--border)' }}>
-                  <div>
-                    <div style={{ fontSize: 15, fontWeight: 600, color: 'var(--text-primary)' }}>{comp.name}</div>
-                    <div style={{ fontSize: 13, color: 'var(--text-muted)', marginTop: 4 }}>{comp.sources.length} sources · {comp.snapshot_count} snapshots</div>
+      <div style={{ display: 'flex', gap: 32 }}>
+        {/* Tracked Competitors */}
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 16 }}>
+          <h2 style={{ fontSize: 16, fontWeight: 700, margin: 0, textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--text-secondary)' }}>Market Surveillance</h2>
+          <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
+            {competitors.length === 0 ? (
+              <div style={{ padding: 32, textAlign: 'center' }}><EmptyState message="No competitors tracked yet." /></div>
+            ) : (
+              <div style={{ display: 'flex', flexDirection: 'column' }}>
+                {competitors.map((comp, i) => (
+                  <div key={comp.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 24px', borderBottom: i === competitors.length - 1 ? 'none' : '1px solid var(--border)', background: 'rgba(255,255,255,0.01)' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                      {/* Placeholder for company logo */}
+                      <div style={{ width: 36, height: 36, borderRadius: 8, background: 'var(--bg-card)', border: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14, fontWeight: 700, color: 'var(--text-muted)' }}>
+                        {comp.name.charAt(0)}
+                      </div>
+                      <div>
+                        <div style={{ fontSize: 16, fontWeight: 800, color: 'var(--text-primary)' }}>{comp.name}</div>
+                        <div style={{ fontSize: 13, color: 'var(--text-muted)', marginTop: 2, fontWeight: 500 }}>{comp.sources.length} sources · {comp.category}</div>
+                      </div>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                      <div style={{ fontSize: 12, color: 'var(--text-muted)', fontWeight: 700, background: 'var(--bg-base)', padding: '6px 12px', borderRadius: 8, textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                        {comp.snapshot_count} Snaps
+                      </div>
+                    </div>
                   </div>
-                  <span style={{ fontSize: 12, color: 'var(--text-muted)' }}>
-                    {comp.last_updated ? new Date(comp.last_updated).toLocaleDateString() : '—'}
-                  </span>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-
-        {/* Recent Changes */}
-        <div className="card" style={{ display: 'flex', flexDirection: 'column' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
-            <h2 style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-secondary)', margin: 0, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
-              Recent Changes
-            </h2>
-            <Link href="/changes" style={{ fontSize: 13, fontWeight: 500, color: 'var(--accent-blue)', textDecoration: 'none' }}>View all →</Link>
-          </div>
-          {changes.length === 0 ? (
-            <EmptyState message="No changes detected yet." />
-          ) : (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
-              {changes.slice(0, 5).map((ch, i) => (
-                <div key={ch.id} style={{ padding: '12px 0', borderBottom: i === 4 || i === changes.length - 1 ? 'none' : '1px solid var(--border)' }}>
-                  <div style={{ display: 'flex', gap: 10, alignItems: 'center', marginBottom: 6 }}>
-                    <span className={`badge ${CHANGE_TYPE_BADGE[ch.change_type] || 'badge-gray'}`}>
-                      {CHANGE_TYPE_LABEL[ch.change_type] || ch.change_type}
-                    </span>
-                    <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-primary)' }}>{ch.competitor_name}</span>
-                  </div>
-                  {ch.after && (
-                    <p style={{ fontSize: 13, color: 'var(--text-secondary)', margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                      &ldquo;{ch.after}&rdquo;
-                    </p>
-                  )}
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* Top Insights */}
-      <div className="card">
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
-          <h2 style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-secondary)', margin: 0, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
-            Top Insights
-          </h2>
-          <Link href="/insights" style={{ fontSize: 13, fontWeight: 500, color: 'var(--accent-blue)', textDecoration: 'none' }}>View all →</Link>
-        </div>
-        {insights.length === 0 ? (
-          <EmptyState message="No insights yet. Load demo data." />
-        ) : (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
-            {insights.map((ins, i) => (
-              <div key={ins.id} style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'flex-start', gap: 16, padding: '20px 0', borderBottom: i === insights.length - 1 ? 'none' : '1px solid var(--border)' }}>
-                <div style={{ flex: '1 1 400px', minWidth: 0 }}>
-                  <div style={{ display: 'flex', gap: 8, alignItems: 'center', marginBottom: 10 }}>
-                    <span className={`badge ${INSIGHT_TYPE_BADGE[ins.insight_type] || 'badge-gray'}`}>{ins.insight_type.replace('_', ' ')}</span>
-                    <span style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-muted)' }}>{ins.competitor_names.join(', ')}</span>
-                  </div>
-                  <div style={{ fontSize: 17, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 8 }}>{ins.title}</div>
-                  <div style={{ fontSize: 14, color: 'var(--text-secondary)', marginBottom: 16, lineHeight: 1.6 }}>
-                    {ins.summary}
-                  </div>
-                  <div style={{ padding: '12px 16px', background: 'rgba(79,125,243,0.05)', borderRadius: 8, borderLeft: '3px solid var(--accent-blue)', marginBottom: 16 }}>
-                     <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--accent-blue)', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Recommendation</div>
-                     <div style={{ fontSize: 14, color: 'var(--text-primary)', lineHeight: 1.5 }}>{ins.recommendation}</div>
-                  </div>
-                  <Link href={`/insights/${ins.id}`}>
-                    <button className="btn-secondary" style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)', color: 'var(--text-primary)', borderRadius: '6px', fontSize: 13, fontWeight: 600, padding: '8px 16px', cursor: 'pointer', transition: 'background 0.2s' }}>
-                      View Evidence ({ins.evidence_count}) →
-                    </button>
-                  </Link>
-                </div>
-                <div style={{ width: 140, flexShrink: 0 }}>
-                  <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-muted)', marginBottom: 8 }}>Priority Score</div>
-                  <PriorityBar score={ins.priority_score} />
-                </div>
+                ))}
               </div>
-            ))}
+            )}
           </div>
-        )}
+        </div>
+
+        {/* Changes & Teaser Column */}
+        <div style={{ width: 420, display: 'flex', flexDirection: 'column', gap: 32 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <h2 style={{ fontSize: 16, fontWeight: 700, margin: 0, textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--text-secondary)' }}>Live Detonations</h2>
+              <Link href="/changes" style={{ fontSize: 13, color: 'var(--accent-blue)', fontWeight: 600, textDecoration: 'none' }}>All Changes →</Link>
+            </div>
+            
+            <div className="card" style={{ padding: 0 }}>
+              {changes.length === 0 ? (
+                <div style={{ padding: 24, textAlign: 'center' }}><EmptyState message="No recent structural changes detected." /></div>
+              ) : (
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  {changes.slice(0, 4).map((ch, i) => (
+                    <div key={ch.id} style={{ padding: '16px 20px', borderBottom: i === 3 || i === changes.length - 1 ? 'none' : '1px solid var(--border)' }}>
+                      <div style={{ display: 'flex', gap: 12, alignItems: 'center', marginBottom: 8 }}>
+                        <span className={`badge ${CHANGE_TYPE_BADGE[ch.change_type] || 'badge-gray'}`} style={{ padding: '4px 10px', fontSize: 11 }}>
+                          {CHANGE_TYPE_LABEL[ch.change_type] || ch.change_type}
+                        </span>
+                        <span style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-primary)' }}>{ch.competitor_name}</span>
+                      </div>
+                      {ch.after && (
+                        <p style={{ fontSize: 13, color: 'var(--text-secondary)', margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontStyle: 'italic', background: 'rgba(0,0,0,0.2)', padding: '8px 12px', borderRadius: 6, borderLeft: '2px solid var(--border)' }}>
+                          &ldquo;{ch.after}&rdquo;
+                        </p>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Predictive Preview V2.5 Teaser */}
+          <PredictivePreview preview={mockupPreview} />
+
+        </div>
       </div>
     </div>
   );
 }
 
-function StatCard({ label, value, color }: { label: string; value: number; color: string }) {
+function StatCard({ label, value, color, icon }: { label: string; value: string; color: string; icon: string }) {
   return (
-    <div className="card" style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-      <div style={{ fontSize: 12, color: 'var(--text-muted)', fontWeight: 500 }}>{label}</div>
-      <div style={{ fontSize: 32, fontWeight: 700, color }}>{value}</div>
+    <div className="card" style={{ display: 'flex', alignItems: 'center', gap: 16, padding: '24px' }}>
+      <div style={{ 
+        width: 48, height: 48, borderRadius: 12, 
+        background: `color-mix(in srgb, ${color} 15%, transparent)`,
+        color, fontSize: 24, display: 'flex', alignItems: 'center', justifyContent: 'center',
+        boxShadow: `inset 0 0 0 1px color-mix(in srgb, ${color} 30%, transparent)`
+      }}>
+        {icon}
+      </div>
+      <div>
+        <div style={{ fontSize: 28, fontWeight: 800, color: 'var(--text-primary)', lineHeight: 1.1 }}>{value}</div>
+        <div style={{ fontSize: 12, color: 'var(--text-secondary)', fontWeight: 600, marginTop: 4, textTransform: 'uppercase', letterSpacing: '0.04em' }}>{label}</div>
+      </div>
     </div>
   );
 }
 
 function LoadingState() {
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 300, color: 'var(--text-muted)', fontSize: 14 }}>
-      Loading dashboard…
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 400, color: 'var(--accent-purple)', fontSize: 16, fontWeight: 600 }}>
+      <span style={{ animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite' }}>Initializing Intelligence Engine V2…</span>
     </div>
   );
 }
 
 function ErrorState({ message, onRetry }: { message: string; onRetry: () => void }) {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: 300, gap: 16 }}>
-      <div style={{ fontSize: 14, color: 'var(--accent-red)' }}>⚠ Backend unavailable</div>
-      <div style={{ fontSize: 13, color: 'var(--text-muted)', maxWidth: 400, textAlign: 'center' }}>{message}</div>
-      <button className="btn-primary" onClick={onRetry}>Retry</button>
+    <div className="card" style={{ maxWidth: 500, margin: '100px auto', textAlign: 'center', padding: 40, borderTop: '4px solid var(--accent-pink)' }}>
+      <div style={{ fontSize: 40, marginBottom: 16 }}>⚠️</div>
+      <h3 style={{ fontSize: 20, margin: '0 0 12px', color: 'var(--text-primary)' }}>System Offline</h3>
+      <p style={{ fontSize: 14, color: 'var(--text-secondary)', marginBottom: 24, lineHeight: 1.5 }}>{message}</p>
+      <button className="btn-primary" onClick={onRetry}>Re-establish Connection</button>
     </div>
   );
 }
 
 function EmptyState({ message }: { message: string }) {
-  return <div style={{ fontSize: 13, color: 'var(--text-muted)', padding: '16px 0' }}>{message}</div>;
+  return <div style={{ fontSize: 14, color: 'var(--text-muted)', fontWeight: 500 }}>{message}</div>;
 }

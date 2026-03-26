@@ -3,6 +3,7 @@ All Supabase DB queries in one place.
 Each function maps to exactly one logical operation.
 No raw SQL — uses Supabase Python client query builder.
 """
+from typing import Optional
 from db.client import get_client
 
 
@@ -40,7 +41,7 @@ def upsert_source_crawled(source_id: str, crawled_at: str):
     client.table("sources").update({"last_crawled_at": crawled_at}).eq("id", source_id).execute()
 
 
-def get_snapshots(competitor_id: str = None, source_id: str = None, limit: int = 20):
+def get_snapshots(competitor_id: Optional[str] = None, source_id: Optional[str] = None, limit: int = 20):
     client = get_client()
     q = client.table("snapshots").select("*").order("captured_at", desc=True).limit(limit)
     if competitor_id:
@@ -74,7 +75,7 @@ def insert_snapshot(source_id: str, competitor_id: str, raw_content: str, extrac
     }).execute().data[0]
 
 
-def get_diffs(competitor_id: str = None, limit: int = 20):
+def get_diffs(competitor_id: Optional[str] = None, limit: int = 20):
     client = get_client()
     q = client.table("diffs").select("*").order("detected_at", desc=True).limit(limit)
     if competitor_id:
@@ -98,7 +99,7 @@ def insert_diff(source_id: str, competitor_id: str, snapshot_before_id, snapshot
     }).execute().data[0]
 
 
-def get_insights(limit: int = 20, insight_type: str = None):
+def get_insights(limit: int = 20, insight_type: Optional[str] = None):
     client = get_client()
     q = client.table("insights").select("*").order("priority_score", desc=True).limit(limit)
     if insight_type:
@@ -154,5 +155,15 @@ def count_snapshots_for_competitor(competitor_id: str) -> int:
 def check_data_seeded() -> bool:
     """Returns True if any competitors exist — used to skip re-seeding."""
     client = get_client()
-    result = client.table("competitors").select("id").limit(1).execute()
-    return len(result.data) > 0
+    comps = client.table("competitors").select("id").limit(1).execute()
+    return len(comps.data) > 0
+
+
+def get_geo_signals(limit: int = 50):
+    client = get_client()
+    return client.table("geo_signals").select("*").order("created_at", desc=True).limit(limit).execute().data
+
+
+def insert_geo_signal(data: dict):
+    client = get_client()
+    return client.table("geo_signals").insert(data).execute().data[0]

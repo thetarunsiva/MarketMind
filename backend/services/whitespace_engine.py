@@ -94,6 +94,17 @@ def generate_whitespace_recommendations(
         dimension_averages[dim] = sum(values) / len(values) if values else 0.0
 
     recommendations = []
+    
+    # GEO Injection: Fetch signals to see if saturated players are also winning AI visibility
+    from db import queries
+    geo_signals = queries.get_geo_signals(limit=20)
+    geo_winners = {}
+    for geo in geo_signals:
+        for comp in geo.get("surfaced_companies", []):
+            geo_winners[comp] = geo_winners.get(comp, 0.0) + geo.get("appearance_frequency", 0.0)
+            
+    top_geo_comp = max(geo_winners, key=geo_winners.get) if geo_winners else None
+
     for dim, avg in sorted(dimension_averages.items(), key=lambda x: abs(x[1]), reverse=True):
         meta = DIMENSION_META.get(dim, {})
         if not meta:
@@ -115,12 +126,18 @@ def generate_whitespace_recommendations(
         gap_label = meta["low_side"] if gap_side == "low" else meta["high_side"]
         saturated_label = meta["high_side"] if gap_side == "low" else meta["low_side"]
 
+        why_whitespace = f"Dimension average score: {avg:.2f} (scale: -1 to +1). Values above ±{SATURATION_THRESHOLD} indicate cluster saturation."
+        
+        # Add GEO Correlation Signal
+        if top_geo_comp and any(top_geo_comp.lower() in e.competitor_name.lower() for e in evidence):
+            why_whitespace += f" GEO Signal Match: The saturated market leader ({top_geo_comp}) is also dominating LLM recommendation visibility metrics, making this whitespace even more critical to action."
+
         reco = WhitespaceRecommendation(
             id=str(uuid.uuid4()),
             title=f"Whitespace: {meta['label']}",
             summary=description,
             why_it_matters=f"All {len(competitors)} tracked competitors position strongly toward {saturated_label}. This creates an unclaimed positioning lane for {gap_label}.",
-            why_its_whitespace=f"Dimension average score: {avg:.2f} (scale: -1 to +1). Values above ±{SATURATION_THRESHOLD} indicate cluster saturation.",
+            why_its_whitespace=why_whitespace,
             recommended_action=action,
             confidence=confidence,
             dimension=dim,
