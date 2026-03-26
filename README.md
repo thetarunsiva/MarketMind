@@ -17,9 +17,9 @@
 
 ## **🔗 Live Links**
 
-- **Frontend:** `PASTE_YOUR_VERCEL_LINK_HERE`
-- **Backend:** `PASTE_YOUR_BACKEND_LINK_HERE`
-- **GitHub Repo:** `https://github.com/thetarunsiva/MarketMind`
+- **Frontend:** [`Vercel`](https://market-mind-one.vercel.app/)
+- **Backend:**  [`Render`](https://marketmind-backend-otqq.onrender.com/)
+- **GitHub Repo:**  [`GitHub`](https://github.com/thetarunsiva/MarketMind/)
 
 ---
 
