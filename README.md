@@ -1,277 +1,171 @@
-# MarketMind  
-### AI-Native Market Intelligence Engine for Competitive Strategy
+<div align="center">
 
-<p align="center">
-  <img alt="MarketMind Banner" src="https://img.shields.io/badge/MarketMind-V2.5-8B5CF6?style=for-the-badge" />
-  <img alt="Status" src="https://img.shields.io/badge/Status-Hackathon%20Ready-EC4899?style=for-the-badge" />
-  <img alt="Mode" src="https://img.shields.io/badge/Modes-Demo%20%7C%20Live%20%7C%20Hybrid-6366F1?style=for-the-badge" />
+# **MarketMind**
+### **AI-Native Market Intelligence Engine**
+
+<p>
+  <img src="https://img.shields.io/badge/Version-V2.5-8B5CF6?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/Status-Hackathon%20Ready-EC4899?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/Modes-Demo%20%7C%20Live%20%7C%20Hybrid-6366F1?style=for-the-badge" />
 </p>
 
-<p align="center">
-  <b>Track competitors. Surface whitespace. Validate positioning with GEO signals. Turn scattered signals into strategic action.</b>
-</p>
+**Track competitors. Detect change. Validate with GEO. Generate strategy.**
+
+</div>
 
 ---
 
-## 🚀 Live Demo
+## **🔗 Live Links**
 
-**Frontend:** `PASTE_YOUR_VERCEL_LINK_HERE`  
-**Backend/API:** `PASTE_YOUR_BACKEND_LINK_HERE`
-
-> For judges: the safest walkthrough uses **Demo Mode** first, then optionally pivots into **Live Extraction** for authenticity.
-
----
-
-## ✨ What is MarketMind?
-
-**MarketMind** is a competitive intelligence platform built for modern product, growth, and strategy teams.
-
-It helps answer questions like:
-
-- What are competitors changing on their websites?
-- Which messaging angles are becoming common?
-- What positioning is overused?
-- Where is the whitespace in the market?
-- Which brands are surfacing in **LLM-driven discovery**?
-- What should a company test next?
-
-MarketMind combines:
-
-- **Official website intelligence**
-- **Change tracking across snapshots**
-- **GEO / LLM visibility signals**
-- **Evidence-backed recommendations**
-- **Admin + company onboarding flows**
-- **Fallback-safe demo mode for stable judging**
+- **Frontend:** `PASTE_YOUR_VERCEL_LINK_HERE`
+- **Backend:** `PASTE_YOUR_BACKEND_LINK_HERE`
+- **GitHub Repo:** `https://github.com/thetarunsiva/MarketMind`
 
 ---
 
-## 🧠 Why MarketMind Stands Out
+## **✨ What is MarketMind?**
 
-Most competitor tools stop at dashboards and scraped summaries.
+**MarketMind** is a competitive intelligence platform built for modern **product**, **growth**, and **strategy** teams.
 
-MarketMind goes further by combining **two worlds of intelligence**:
+It helps answer:
 
-### 1. Traditional Web Intelligence
-We track official competitor pages such as:
-- homepages
-- pricing pages
-- feature / product pages
-- selected comparison pages
+- **What are competitors changing?**
+- **Which messaging angles are becoming common?**
+- **Where is the whitespace?**
+- **Which brands are surfacing in LLM-driven discovery?**
+- **What should a company test next?**
+
+---
+
+## **🏆 Why It Stands Out**
+
+MarketMind combines **two intelligence layers**:
+
+### **1. Website Intelligence**
+We track official competitor pages like:
+
+- **Homepages**
+- **Pricing pages**
+- **Feature / product pages**
+- **Comparison pages**
 
 From these, we extract:
-- pricing posture
-- value proposition
-- CTA style
-- feature themes
-- target segment language
-- differentiation claims
-- evidence snippets
 
-### 2. GEO Validation Layer
-We also evaluate **LLM-era discoverability** using fixed buyer-intent prompts.
+- **pricing posture**
+- **value propositions**
+- **CTA style**
+- **feature themes**
+- **segment language**
+- **differentiation claims**
+
+### **2. GEO / LLM Visibility Signals**
+We evaluate how competitors appear across **buyer-intent LLM prompts**.
 
 This reveals:
-- which competitors appear most often in model-generated suggestions
-- where visibility gaps exist
-- whether website positioning aligns with AI-native discovery patterns
 
-This is what gives MarketMind its edge.
-
----
-
-## 🏆 Hackathon Value Proposition
-
-MarketMind is designed to feel like a product teams would actually use after the hackathon.
-
-It delivers:
-
-- **Real business relevance**
-- **Traceable intelligence**
-- **Live + demo-safe hybrid reliability**
-- **Clear recommendations**
-- **A modern GEO layer**
-- **A polished UI with fallback states**
+- **which brands show up more often**
+- **where discoverability gaps exist**
+- **how AI-native visibility differs from website positioning**
 
 ---
 
-# 📌 Core Features
+## **🚀 Core Features**
 
-## 1. Competitive Snapshot Tracking
-Capture and compare curated official competitor pages over time.
+### **Competitive Tracking**
+Capture structured competitor snapshots over time.
 
-**Tracks**
-- homepage messaging
-- pricing changes
-- feature emphasis
-- CTA shifts
-- positioning drift
+### **Change Detection**
+Detect changes in:
+- pricing
+- claims
+- messaging
+- CTA
+- positioning
 
----
+### **Recommendation Engine**
+Generate **concise, evidence-backed recommendations** for a target company.
 
-## 2. Change Detection Engine
-Highlights meaningful changes between snapshots instead of just dumping raw HTML differences.
+### **GEO Validation Layer**
+Track **LLM visibility patterns** using fixed prompt-bank analysis.
 
-**Surfaces**
-- new claims
-- removed claims
-- pricing changes
-- CTA changes
-- audience shifts
-- messaging rewrites
+### **Whitespace Discovery**
+Highlight **underused market opportunities** and strategic gaps.
 
----
+### **Competitor Matrix**
+Compare players across structured dimensions like:
+- **premium vs cost-led**
+- **feature-led vs outcome-led**
+- **enterprise vs SMB**
+- **simplicity vs flexibility**
 
-## 3. Recommendation Engine V2
-Generates concise, strategic, evidence-backed recommendations for a selected target company.
+### **Source Evidence**
+Every major insight is tied back to **evidence snippets** and source context.
 
-Each recommendation includes:
-- title
-- executive summary
-- why it matters
-- supporting competitors
-- evidence summary
-- next action
-- confidence indicator
-- Website vs GEO signal split
-
----
-
-## 4. GEO / LLM Visibility Signals
-A dedicated validation layer that measures which competitors surface in AI-era buyer-intent prompts.
-
-**Examples**
-- best alternatives to Notion
-- best productivity tools for teams
-- top collaboration platforms for startups
-- best tools for docs + project tracking
-
-This helps teams understand how brands are being discovered **beyond classic SEO**.
-
----
-
-## 5. Whitespace Analysis
-Find underused positioning angles and strategic gaps in the market.
-
-This helps answer:
-- what is everyone saying?
-- what is no one saying?
-- what should our company test next?
-
----
-
-## 6. Competitor Matrix
-Compare companies across structured dimensions such as:
-- premium vs cost-led
-- feature-led vs outcome-led
-- enterprise vs SMB
-- simplicity vs flexibility
-- collaboration vs individual productivity
-
----
-
-## 7. Source Evidence & Traceability
-Every important insight in MarketMind is designed to be tied back to:
-- source page
-- snippet
-- signal type
-- supporting competitor
-- captured state
-
-This avoids black-box intelligence.
-
----
-
-## 8. Auth + Admin Layer (V2.5)
-A lightweight but working product layer for demo realism.
-
+### **Auth + Admin**
 Includes:
-- company onboarding
-- Google sign-in
-- company category/domain selection
-- admin access
-- simple usage/company overview
+- **Google/company login**
+- **company onboarding**
+- **admin stats view**
 
 ---
 
-# 🧩 Product Screens / Modules
+## **🧠 Recommendation Philosophy**
 
-## Overview
-- platform health
-- tracked competitors
-- total signal volume
-- latest status
-- quick navigation
+MarketMind does **not** invent magical business outcomes.
 
-## Recommendations
-- 4–5 strategic recommendation cards
-- signal contribution visuals
-- evidence summaries
-- competitor support chips
+Instead of fake claims like:
 
-## GEO Validation
-- prompt-bank coverage
-- surfaced competitor patterns
-- visibility trends
-- GEO-backed recommendation cues
+> “This will improve sales by 32%”
 
-## Whitespace Analysis
-- opportunity cards
-- validation layer support
-- recommended tests
+it uses grounded language like:
 
-## Competitor Matrix
-- structured comparison view
-- positioning patterns at a glance
+- **likely upside**
+- **opportunity area**
+- **recommended experiment**
+- **discoverability hypothesis**
+- **differentiation opportunity**
 
-## Strategic Insights
-- evidence-backed intelligence summaries
-
-## Detected Changes
-- content drift
-- messaging shifts
-- page updates
-- pricing language changes
-
-## Source Snapshots
-- captured/raw evidence
-- extracted structures
-- traceability support
-
-## Admin Dashboard
-- total companies
-- total users
-- category stats
-- company list
+That keeps the platform **credible**, **defensible**, and **business-ready**.
 
 ---
 
-# 🏗️ Tech Stack
+## **🖥️ Product Modules**
 
-## Frontend
+- **Dashboard**
+- **Recommendations**
+- **GEO Signals**
+- **Whitespace Analysis**
+- **Competitor Matrix**
+- **Strategic Insights**
+- **Detected Changes**
+- **Raw Snapshots**
+- **Admin Dashboard**
+
+---
+
+## **⚙️ Tech Stack**
+
+### **Frontend**
 - **Next.js**
 - **TypeScript**
 - **Tailwind CSS**
-- modular component-based architecture
 
-## Backend
+### **Backend**
 - **FastAPI**
 - **Python**
-- structured routes + services + seed loaders
 
-## Data / Auth
+### **Data / Auth**
 - **Supabase**
-- Seeded + Live-compatible data model
-- Google auth support
-- company/user/admin metadata
+- **Seeded + live-compatible data flow**
+- **Google auth support**
 
-## Deployment
+### **Deployment**
 - **Vercel** for frontend
 - **Render / Railway** for backend
 
 ---
 
-# 🧠 Architecture Overview
+## **🏗️ Architecture**
 
 ```text
 Official Competitor Pages
@@ -291,4 +185,4 @@ Official Competitor Pages
       Recommendation + Whitespace Logic
                 │
                 ▼
-        MarketMind Frontend UI
+             MarketMind UI
